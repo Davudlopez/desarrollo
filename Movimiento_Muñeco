@@ -1,0 +1,55 @@
+import tkinter as tk
+import time
+from tkinter import *
+
+from PIL import Image, ImageTk
+
+def mover_imagen():
+    global x, imag_act
+    
+    x += dx
+   
+    if imag_act == 0:
+        canvas.itemconfig(imag_id, image=Foto2)
+        imag_act = 1
+    else:
+        canvas.itemconfig(imag_id, image=Foto1)
+        imag_act = 0
+
+    canvas.coords(imag_id, x,100)
+
+    if x < 370:
+        Aplicacion.after(20, mover_imagen)
+
+if __name__ == "__main__":
+    Aplicacion = Tk()
+    Aplicacion.geometry("500x300")
+    
+    canvas = Canvas(Aplicacion, width=300, height=300, bg='white')
+    
+    canvas.pack(expand=YES, fill=BOTH)
+    
+    Imagen1 = Image.open('./Walking_man1.jpg')
+    Imagen1 = Imagen1.resize((100, 100))
+    Foto1 = ImageTk.PhotoImage(Imagen1)
+
+    Imagen2 = Image.open('./Walking_man2.jpg')
+    Imagen2 = Imagen2.resize((100, 100))
+    Foto2 = ImageTk.PhotoImage(Imagen2)
+    
+    imag_id = canvas.create_image(10, 300, image=Foto1, anchor=NW)
+  
+    Via = canvas.create_rectangle(498, 199, 1, 290, fill="grey", width=5)
+    Linea_blanca1 = canvas.create_rectangle(150, 250, 30, 230, fill="white")
+    Linea_blanca2 = canvas.create_rectangle(300, 250, 180,230, fill="white")
+    Linea_blanca3 = canvas.create_rectangle(450, 250, 330,230, fill="white")
+    Palo = canvas.create_line(470, 60, 470,200, fill="black", width=5)
+    Bandera = canvas.create_rectangle(497, 60, 470,100, fill="red", width=1)
+
+    x = 10
+    dx = 2
+    imag_act = 0 
+    
+    mover_imagen()
+    
+    Aplicacion.mainloop()
